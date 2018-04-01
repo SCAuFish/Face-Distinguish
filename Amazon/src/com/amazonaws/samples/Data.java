@@ -16,13 +16,12 @@ import com.amazonaws.services.rekognition.model.Smile;
 
 public class Data { 
 	String name;
-	//List<Float> emotions = new ArrayList<Float>();
+	List<Float> emotions = new ArrayList<Float>();
 	List<Integer> age = new ArrayList<Integer>();
 	List<Boolean> mouthOpen = new ArrayList<Boolean>();
 	List<Boolean> eyesOpen = new ArrayList<Boolean>();
 	List<Boolean> smile = new ArrayList<Boolean>();
 	List<String> targets = new ArrayList<String>();
-	double zhuIndex;
 
 	public Data(String name) {
 		this.name = name;
@@ -75,7 +74,7 @@ public class Data {
 		}
 
         	scaledZhuIndex = Math.atan(zhuIndex)/(Math.PI/2);
-		this.zhuIndex = scaledZhuIndex;
+		this.emotions.add((float)scaledZhuIndex);
 	}
 
 
