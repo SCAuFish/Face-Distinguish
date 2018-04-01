@@ -22,6 +22,7 @@ public class Data {
 	List<Boolean> eyesOpen = new ArrayList<Boolean>();
 	List<Boolean> smile = new ArrayList<Boolean>();
 	List<String> targets = new ArrayList<String>();
+	double zhuIndex;
 
 	public Data(String name) {
 		this.name = name;
@@ -44,7 +45,7 @@ public class Data {
 			emotions.add(-em.getConfidence());
 	}*/
 	
-	public double getZhuIndex(List<Emotion> list){
+	public void addZhuIndex(List<Emotion> list){
 		double zhuIndex;
         	double scaledZhuIndex;
 		for(Emotion e: list){
@@ -74,7 +75,7 @@ public class Data {
 		}
 
         	scaledZhuIndex = Math.atan(zhuIndex)/(Math.PI/2);
-		return scaledZhuIndex;
+		this.zhuIndex = scaledZhuIndex;
 	}
 
 
