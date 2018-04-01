@@ -25,6 +25,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class DetectFacesExample {
+	static Data data;
+	public DetectFacesExample(Data data){
+		this.data = data;
+	}
 	
    public static void main(String[] args) throws Exception {
 
@@ -75,6 +79,11 @@ public class DetectFacesExample {
          List < FaceDetail > faceDetails = result.getFaceDetails();
 
          for (FaceDetail face: faceDetails) {
+        	 data.addAge(face.getAgeRange());
+        	 data.addEmotion(face.getEmotions());
+        	 data.addMouthOpen(face.getMouthOpen());
+        	 data.addEyesOpen(face.getEyesOpen());
+        	 data.addSmile(face.getSmile());
             if (request.getAttributes().contains("ALL")) {
                AgeRange ageRange = face.getAgeRange();
                System.out.println("The detected face is estimated to be between "

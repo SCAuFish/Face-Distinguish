@@ -39,15 +39,16 @@ public class CompareFacesExample {
 	static float left, top, height, width;
 	
 	public CompareFacesExample(String sPath, String tPath){
-		this.sourcePath = sPath;
-		this.targetPath = tPath;
+		sourcePath = sPath;
+		targetPath = tPath;
+		matched = false;
 	}
 
    public static void main(String[] args) throws Exception{
        Float similarityThreshold = 70F;
        String location = "C:\\Users\\hp\\git\\Amazon\\Amazon\\src\\com\\amazonaws\\samples\\";
-       String sourceImage = location + "paul.png";
-       String targetImage = location + "paul2.png";
+       String sourceImage = location + sourcePath;
+       String targetImage = location + targetPath;
        ByteBuffer sourceImageBytes=null;
        ByteBuffer targetImageBytes=null;
 
