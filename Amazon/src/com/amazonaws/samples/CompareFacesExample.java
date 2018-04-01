@@ -2,7 +2,7 @@
  * @author UCSD hacker team
  * @time 2018-3-31
  * This is a class adapted from a amazon sample face comparison program.
- * It can detect human faces from local files and compare the sourceImage and the targetImage
+ * It can detect human faces from local files and compare the sourceImage with the targetImage
  * for the similarity between human faces in different images.
  */
 
@@ -34,22 +34,22 @@ import com.amazonaws.services.rekognition.model.ComparedSourceImageFace;
 
 
 public class CompareFacesExample {
-	static String source, target;
-	static Student student;
-	public CompareFacesExample(Student s, String photo){
-		this.source = s.portrait;
-		this.target = photo;
-		this.student = s;
+	static boolean matched;
+	static String sourcePath, targetPath;
+	static float left, top, height, width;
+	
+	public CompareFacesExample(String sPath, String tPath){
+		this.sourcePath = sPath;
+		this.targetPath = tPath;
 	}
 
    public static void main(String[] args) throws Exception{
        Float similarityThreshold = 70F;
-       String location = "C:\\Users\\hp\\Amazon\\Amazon\\src\\com\\amazonaws\\samples\\";
-       String sourceImage = location + source;
-       String targetImage = location + target;
+       String location = "C:\\Users\\hp\\git\\Amazon\\Amazon\\src\\com\\amazonaws\\samples\\";
+       String sourceImage = location + "paul.png";
+       String targetImage = location + "paul2.png";
        ByteBuffer sourceImageBytes=null;
        ByteBuffer targetImageBytes=null;
-
 
        AWSCredentials credentials;
        try {
@@ -105,6 +105,8 @@ public class CompareFacesExample {
        // Display results
        List <CompareFacesMatch> faceDetails = compareFacesResult.getFaceMatches();
        ComparedSourceImageFace sourceFace = compareFacesResult.getSourceImageFace();
+       if (compareFacesResult.getFaceMatches().size() > 0)
+    	   matched = true;
        List <ComparedFace> allFaces = new ArrayList<ComparedFace>(compareFacesResult.getUnmatchedFaces());
        for (CompareFacesMatch match : compareFacesResult.getFaceMatches()){
     	   allFaces.add(match.getFace());
@@ -121,14 +123,19 @@ public class CompareFacesExample {
        							   + "	Top   : " + sourceFace.getBoundingBox().getTop() + "\n");
        // Print the info of match faces
        for (CompareFacesMatch match: faceDetails){
-       	ComparedFace face= match.getFace();
-       	BoundingBox position = face.getBoundingBox();
-       	Float nosePosX = null;
-       	Float nosePosY = null;
-       	for (Landmark l : face.getLandmarks()){
-       		if (l.toString().contains("nose")){
-       			nosePosX = l.getX();
-       			nosePosY = l.getY();
+	       ComparedFace face= match.getFace();
+    	   // I assume there's only one matched face
+	       left = face.getBoundingBox().getLeft();
+	       top = face.getBoundingBox().getTop();
+	       height = face.getBoundingBox().getHeight();
+	       width = face.getBoundingBox().getWidth();
+	       BoundingBox position = face.getBoundingBox();
+	       Float nosePosX = null;
+	       Float nosePosY = null;
+	       for (Landmark l : face.getLandmarks()){
+	    	   if (l.toString().contains("nose")){
+	    		   nosePosX = l.getX();
+	    		   nosePosY = l.getY();
        		}
        	}
        	System.out.println("Face" + (sorted.indexOf(face) + 1) + " at " + position.getLeft().toString()
@@ -146,7 +153,6 @@ public class CompareFacesExample {
        System.out.println("There were " + uncompared.size()
        		+ " faces that did not match\n");
        for (ComparedFace f : uncompared){
-    	   
     	   BoundingBox position = f.getBoundingBox();
     	   Float nosePosX = null;
     	   Float nosePosY = null;

@@ -1,4 +1,9 @@
 package com.amazonaws.samples;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.List;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentials;
@@ -15,15 +20,18 @@ import com.amazonaws.services.rekognition.model.DetectFacesResult;
 import com.amazonaws.services.rekognition.model.FaceDetail;
 import com.amazonaws.services.rekognition.model.Image;
 import com.amazonaws.services.rekognition.model.S3Object;
+import com.amazonaws.util.IOUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class DetectFacesExample {
-
+	
    public static void main(String[] args) throws Exception {
 
-      String photo = "paul.jpg";
-      String bucket = "face-deployments-mobilehub-252882495";
+      //String photo = "paul.jpg";
+      //String bucket = "face-deployments-mobilehub-252882495";
+      String image = "C:\\Users\\hp\\git\\Amazon\\Amazon\\out.png";
+      ByteBuffer imageBytes=null;
 
       AWSCredentials credentials;
       try {
@@ -40,12 +48,26 @@ public class DetectFacesExample {
          .withCredentials(new AWSStaticCredentialsProvider(credentials))
          .build();
 
-      DetectFacesRequest request = new DetectFacesRequest()
+      /*DetectFacesRequest request = new DetectFacesRequest()
          .withImage(new Image()
             .withS3Object(new S3Object()
                .withName(photo)
                .withBucket(bucket)))
-         .withAttributes(Attribute.ALL);
+         .withAttributes(Attribute.ALL);*/
+      try (InputStream inputStream = new FileInputStream(new File(image))) {
+          imageBytes = ByteBuffer.wrap(IOUtils.toByteArray(inputStream));
+       }
+       catch(Exception e)
+       {
+           System.out.println("Failed to load source image " + image);
+           System.exit(1);
+       }
+      
+      Image img=new Image().withBytes(imageBytes);
+      
+      DetectFacesRequest request = new DetectFacesRequest()
+    	         .withImage(img)
+    	         .withAttributes(Attribute.ALL);
       // Replace Attribute.ALL with Attribute.DEFAULT to get default values.
 
       try {
