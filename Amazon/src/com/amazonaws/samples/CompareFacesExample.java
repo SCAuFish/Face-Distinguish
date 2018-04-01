@@ -34,12 +34,19 @@ import com.amazonaws.services.rekognition.model.ComparedSourceImageFace;
 
 
 public class CompareFacesExample {
+	static String source, target;
+	static Student student;
+	public CompareFacesExample(Student s, String photo){
+		this.source = s.portrait;
+		this.target = photo;
+		this.student = s;
+	}
 
    public static void main(String[] args) throws Exception{
        Float similarityThreshold = 70F;
        String location = "C:\\Users\\hp\\Amazon\\Amazon\\src\\com\\amazonaws\\samples\\";
-       String sourceImage = location + "duZhao2.png";
-       String targetImage = location + "heZhao2.png";
+       String sourceImage = location + source;
+       String targetImage = location + target;
        ByteBuffer sourceImageBytes=null;
        ByteBuffer targetImageBytes=null;
 
