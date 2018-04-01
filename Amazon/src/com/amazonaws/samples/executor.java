@@ -9,7 +9,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public class executor {
-	static List<Data> dataList = new ArrayList<Data>();
+	static List<Data> dataList = new ArrayList<Data>(); 
 	
 	public static void main(String[] args) {
 		String[] arr;
