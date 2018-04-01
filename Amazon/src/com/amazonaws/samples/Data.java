@@ -15,7 +15,7 @@ import com.amazonaws.services.rekognition.model.Smile;
 
 public class Data { 
 	String name;
-	List<Float> emotions = new ArrayList<Float>();
+	//List<Float> emotions = new ArrayList<Float>();
 	List<Integer> age = new ArrayList<Integer>();
 	List<Boolean> mouthOpen = new ArrayList<Boolean>();
 	List<Boolean> eyesOpen = new ArrayList<Boolean>();
@@ -26,7 +26,7 @@ public class Data {
 		this.name = name;
 	}
 
-	public void addEmotion(List<Emotion> list) {
+	/*public void addEmotion(List<Emotion> list) {
 		float max = 0;
 		Emotion em = null;
 		for (Emotion e : list) {
@@ -41,7 +41,41 @@ public class Data {
 			emotions.add(0f);
 		else
 			emotions.add(-em.getConfidence());
+	}*/
+	
+	public double getZhuIndex(List<Emotion> list){
+		double zhuIndex;
+        	double scaledZhuIndex;
+		for(Emotion e: list){
+			if(e.getType().equals("HAPPY")){
+				zhuIndex+=e.getConfidence();
+			}
+			if(e.getType().equals("SURPRISE"){
+				double surpriseRatio=0.8;
+				zhuIndex+=e.getConfidence()*surpriseRatio;
+			}
+		        if(e.getType().equals("CALM")||e.getType().equals("UNKNOWN")){
+				double calmRatio = 0;
+				zhuIndex+=e.getConfidence()*calmRatio;
+			}
+			if(e.getType().equals("CONFUSED")){
+                		double confusedRatio = -.1;
+                		zhuIndex+=e.getConfidence()*confusedRatio;
+            		}
+            		if(e.getType().equals("SAD")||e.getType().equals("ANGRY")){
+                		double sadRatio = -1;
+                		zhuIndex+=e.getConfidence()*sadRatio;
+            		}
+            		if(e.getType().equals("DISGUSTED")){
+                		double disgustedRatio = -1.2;
+                		zhuIndex+=e.getConfidence()*disgusteRatio;
+            		}
+		}
+
+        	scaledZhuIndex = Math.atan(zhuIndex)/(Math.PI/2);
+		return scaledZhuIndex;
 	}
+
 
 	public void addAge(AgeRange ageRange) {
 		if (ageRange != null) {
