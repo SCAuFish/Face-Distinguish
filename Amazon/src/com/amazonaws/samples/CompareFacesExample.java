@@ -3,7 +3,7 @@
  * @time 2018-3-31
  * This is a class adapted from a amazon sample face comparison program.
  * It can detect human faces from local files and compare the sourceImage and the targetImage
- * for the similarity between human faces in different images. 
+ * for the similarity between human faces in different images.  
  */
 
 package com.amazonaws.samples;
